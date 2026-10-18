@@ -63,3 +63,17 @@ Computer Science and Engineering Student
 ---
 
 **Vaultly — Your files, your space.**
+## 📱 Download Vaultly
+
+Get the Vaultly Android app using the link below.
+
+[⬇️ Download Vaultly APK](https://drive.google.com/file/d/1QWtNk1jOwseybvy5DDsDJQtK9wpfp93f/view?usp=drivesdk)
+
+### 📲 Installation
+1. Open the download link.
+2. Download the APK.
+3. Open the downloaded file on your Android phone.
+4. Follow the installation instructions.
+
+### 🔐 Security
+Vaultly is a personal vault application. Review its security features before storing sensitive information.
