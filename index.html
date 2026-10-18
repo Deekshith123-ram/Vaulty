@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<title>Vaultly</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap">
+<style>
+:root{--g:rgba(255,255,255,.06);--b:rgba(255,255,255,.12);--t:#eaf0ff;--m:#8e9bc4;--v:#8b5cf6;--c:#22d3ee;--r:#f87171;padding-top:env(safe-area-inset-top,0px);color-scheme:dark}
+*{box-sizing:border-box;margin:0}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{font:15px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:var(--t);min-height:100vh;background:radial-gradient(900px 520px at 8% -8%,#3b1f9a55,transparent),radial-gradient(800px 520px at 100% 100%,#0e749055,transparent),#03050f;background-attachment:fixed}
+button,input,select{font:inherit;color:inherit}
+h2{font-size:24px}h3{font-size:16px;margin:22px 0 10px}
+.mt{color:var(--m);font-size:13px}
+.glass,.card{background:var(--g);border:1px solid var(--b);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-radius:18px}
+.pad{padding:16px;margin-top:14px}
+.app{display:grid;grid-template-columns:232px 1fr;min-height:100vh}
+aside{position:sticky;top:0;height:100vh;padding:20px 14px;display:flex;flex-direction:column;gap:6px;border-right:1px solid var(--b);background:#0a102a99;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
+.logo{font-weight:800;font-size:22px;display:flex;gap:10px;align-items:center;padding:4px 10px 18px}
+.logo i{width:34px;height:34px;border-radius:11px;background:linear-gradient(135deg,var(--v),var(--c));display:grid;place-items:center;color:#fff}
+#nav{display:flex;flex-direction:column;gap:4px;flex:1}
+.nv{display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:12px;color:var(--m);background:none;border:0;cursor:pointer;text-align:left;width:100%;transition:.2s}
+.nv.on,.nv:hover{background:linear-gradient(90deg,#8b5cf633,#22d3ee1a);color:var(--t)}
+.note{display:flex;gap:8px;align-items:flex-start;font-size:12.5px;color:#b9c6ee;background:#22d3ee12;border:1px solid #22d3ee33;border-radius:12px;padding:10px 12px}
+.note svg{flex:none;color:var(--c);margin-top:1px}
+main{padding:22px clamp(14px,3vw,34px) 120px;min-width:0}
+.top{display:flex;gap:12px;align-items:center;margin-bottom:20px}
+.ml{display:none;font-weight:800;font-size:20px}
+.sr{position:relative;flex:1;max-width:560px}
+.sr svg{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--m)}
+input,select{background:#ffffff0d;border:1px solid var(--b);border-radius:12px;padding:11px 14px;outline:0;width:100%;transition:.2s}
+select option{background:#10162f}
+input:focus,select:focus{border-color:var(--c);box-shadow:0 0 0 3px #22d3ee22}
+.sr input{padding-left:40px;border-radius:14px}
+.hd{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.sp{justify-content:space-between}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:12px;border:1px solid var(--b);background:#ffffff0d;cursor:pointer;text-decoration:none;transition:.2s;width:auto}
+.btn:hover{background:#ffffff1c}
+.btn.pri{background:linear-gradient(135deg,var(--v),#4f6df5 60%,var(--c));border:0;color:#fff;font-weight:600}
+.btn.dng{background:#dc2626;border:0}.btn.red{color:var(--r)}
+.ib{width:38px;height:38px;border-radius:12px;border:1px solid var(--b);background:#ffffff0d;cursor:pointer;display:grid;place-items:center;flex:none}
+.stats,.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));margin:14px 0}
+.grid{grid-template-columns:repeat(auto-fill,minmax(170px,1fr))}
+.stat{padding:16px}.stat b{display:block;font-size:26px;margin-top:6px}.stat span{color:var(--m);display:flex;gap:8px;align-items:center;font-size:13px}
+.bar{height:8px;border-radius:9px;background:#ffffff14;margin:10px 0 6px;overflow:hidden}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--v),var(--c));border-radius:9px}
+.cr{display:grid;grid-template-columns:100px 1fr 28px;gap:10px;align-items:center;font-size:13px;padding:6px 8px;border-radius:10px;cursor:pointer;width:100%;background:none;border:0;text-align:left}
+.cr:hover{background:#ffffff0d}.cr .bar{margin:0}
+.chips{display:flex;gap:8px;overflow-x:auto;padding-bottom:8px;margin-bottom:6px}
+.chip{white-space:nowrap;padding:7px 13px;border-radius:99px;border:1px solid var(--b);background:#ffffff0a;cursor:pointer;color:var(--m)}
+.chip.on{background:#8b5cf63a;color:var(--t);border-color:#8b5cf6}
+.doc,.fld{position:relative;cursor:pointer;overflow:hidden;transition:.2s}
+.doc:hover,.fld:hover{transform:translateY(-3px);border-color:#22d3ee66}
+.th{height:112px;background:#0006;display:grid;place-items:center;overflow:hidden}
+.th img{width:100%;height:100%;object-fit:cover}
+.ext{display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--c)}.ext b{font-size:12px;color:var(--t)}
+.nm{padding:10px 12px 0;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.doc .mt{padding:0 12px 12px}
+.fv{position:absolute;top:8px;right:8px;width:30px;height:30px;border-radius:50%;border:0;background:#000a;color:#fff;cursor:pointer;display:grid;place-items:center}
+.fv.on{color:#facc15}.fv.on svg{fill:#facc15}
+.fld{padding:18px;display:flex;flex-direction:column;gap:6px}.fld svg{color:var(--v)}
+.empty{text-align:center;padding:50px 20px;color:var(--m);display:flex;flex-direction:column;align-items:center;gap:10px}
+.empty h3{color:var(--t);margin:0}
+.spin{width:34px;height:34px;border:3px solid #ffffff22;border-top-color:var(--c);border-radius:50%;animation:sp .8s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.fab{position:fixed;right:22px;bottom:22px;width:58px;height:58px;border-radius:50%;border:0;background:linear-gradient(135deg,var(--v),var(--c));color:#fff;cursor:pointer;display:grid;place-items:center;box-shadow:0 10px 30px #8b5cf666;z-index:20;transition:.2s}
+.fab:hover{transform:scale(1.08)}
+.ov{position:fixed;inset:0;background:#02040dcc;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:max(12px,env(safe-area-inset-top,0px)) 12px max(12px,env(safe-area-inset-bottom,0px));z-index:50}
+.ov.on{display:flex}#ov2{z-index:60}#lock{z-index:90;background:#03050f}
+.dlg{padding:22px;width:min(420px,100%);display:flex;flex-direction:column;gap:12px;background:#111836ee}.dlg.wide{width:min(520px,100%)}
+.dlg h3{margin:0}.err{color:var(--r);font-size:13px;min-height:16px}.lk{display:none}#lock.on{display:flex}#lock .dlg{align-items:center;text-align:center}
+.drop{border:2px dashed #8b5cf688;border-radius:16px;padding:28px 16px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:8px;color:var(--c)}
+.drop p{color:var(--t)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}label{display:flex;flex-direction:column;gap:5px;font-size:13px;color:var(--m)}
+.pv{width:min(1020px,100%);max-height:94vh;display:flex;flex-direction:column;padding:16px;background:#0d1330ee}
+.pvh{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px}
+.pvh h3{margin:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pvb{display:grid;grid-template-columns:1fr 280px;gap:14px;overflow:auto;min-height:0}
+.media{background:#0007;border-radius:14px;display:grid;place-items:center;min-height:260px;overflow:hidden}
+.media img,.media video{max-width:100%;max-height:68vh;object-fit:contain}
+.media iframe{width:100%;height:68vh;border:0;background:#fff}
+.media .big{padding:40px}
+.side{display:flex;flex-direction:column;gap:10px}.side .btn{justify-content:center}
+.kv{display:flex;justify-content:space-between;gap:10px;font-size:13px;border-bottom:1px solid var(--b);padding:6px 0}.kv span:first-child{color:var(--m)}.kv span:last-child{text-align:right;word-break:break-all}
+.ed .stage{display:grid;place-items:center;background:#0007;border-radius:14px;overflow:auto;max-height:58vh;padding:8px}
+.ed canvas{max-width:100%;max-height:54vh;touch-action:none;cursor:crosshair}
+.tools{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:12px}
+.tools .btn.on{background:#8b5cf64d;border-color:var(--v)}
+.tools input[type=range]{width:130px;padding:0}.tools input[type=color]{width:38px;height:38px;padding:2px}
+.fl{position:relative;overflow:hidden;flex-direction:row;color:var(--t);font-size:15px;cursor:pointer}.fl.pri{color:#fff}.fl input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;padding:0;border:0}
+#dz{position:fixed;inset:12px;border:3px dashed var(--c);border-radius:24px;background:#22d3ee18;display:none;place-items:center;font-size:22px;z-index:80;pointer-events:none}
+#dz.on{display:grid}
+#busy{position:fixed;top:calc(14px + env(safe-area-inset-top,0px));left:50%;transform:translateX(-50%);display:none;gap:10px;align-items:center;padding:10px 16px;border-radius:99px;z-index:95;background:#111836f2;border:1px solid var(--b)}
+#busy.on{display:flex}#busy .spin{width:18px;height:18px;border-width:2px}
+#toasts{position:fixed;bottom:96px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;gap:8px;z-index:99;width:min(420px,92vw)}
+.toast{padding:12px 16px;border-radius:14px;background:#111836f5;border:1px solid var(--b);animation:up .25s}
+.toast.err{border-color:var(--r)}@keyframes up{from{opacity:0;transform:translateY(10px)}}
+@media(max-width:820px){
+.app{grid-template-columns:1fr}
+aside{position:fixed;top:auto;bottom:0;left:0;right:0;height:auto;flex-direction:row;padding:6px 4px calc(6px + env(safe-area-inset-bottom,0px));border-right:0;border-top:1px solid var(--b);z-index:30}
+aside .logo,aside>.note{display:none}
+#nav{flex-direction:row;width:100%;gap:0}
+.nv{flex-direction:column;gap:2px;padding:6px 2px;font-size:10.5px;justify-content:center;align-items:center;text-align:center;flex:1;min-width:0}
+.ml{display:block}.fab{bottom:calc(82px + env(safe-area-inset-bottom,0px));right:16px}
+main{padding-bottom:160px}#toasts{bottom:150px}
+.pvb{grid-template-columns:1fr}.media iframe{height:56vh}
+}
+/* ===== premium glass upgrade ===== */
+:root{--b:rgba(255,255,255,.11);--m:#9aa8d6;--ease:cubic-bezier(.22,.9,.3,1)}
+*{scrollbar-width:thin;scrollbar-color:#ffffff30 transparent}
+body{font-family:Inter,system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;-webkit-font-smoothing:antialiased;background:radial-gradient(1100px 650px at 5% -10%,#3b1f9a66,transparent 60%),radial-gradient(900px 600px at 100% 105%,#0e749066,transparent 60%),linear-gradient(160deg,#060b24,#070d2e 45%,#03050f);background-attachment:fixed}
+body::before,body::after{content:'';position:fixed;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0;animation:fl 18s ease-in-out infinite alternate}
+body::before{width:380px;height:380px;background:#8b5cf638;top:12%;right:8%}
+body::after{width:340px;height:340px;background:#22d3ee26;bottom:6%;left:24%;animation-delay:-9s}
+@keyframes fl{to{transform:translate(-50px,40px) scale(1.15)}}
+.app{position:relative;z-index:1}
+h2,.logo,.ml{font-family:'Plus Jakarta Sans',Inter,system-ui,sans-serif}
+h2{font-size:28px;font-weight:700;letter-spacing:-.02em;background:linear-gradient(90deg,#fff,#b8c4ff 60%,#8be9fd);-webkit-background-clip:text;background-clip:text;color:transparent}
+h3{font-size:12px;text-transform:uppercase;letter-spacing:.14em;color:var(--m);font-weight:600}
+.dlg h3,.pvh h3,.empty h3{text-transform:none;letter-spacing:0;font-size:17px;color:var(--t)}
+.logo{font-weight:800;letter-spacing:-.02em}.logo i{box-shadow:0 6px 20px #8b5cf666,inset 0 1px 0 #ffffff55}
+.glass,.card{background:linear-gradient(145deg,#ffffff1c,#ffffff08);border:1px solid var(--b);backdrop-filter:blur(26px) saturate(170%);-webkit-backdrop-filter:blur(26px) saturate(170%);box-shadow:0 12px 40px #0007,inset 0 1px 0 #ffffff26}
+.dlg,.pv{background:linear-gradient(150deg,#1b2254f0,#0b1030f2);box-shadow:0 30px 80px #000a,inset 0 1px 0 #ffffff22}
+.ov{background:radial-gradient(600px 400px at 50% 30%,#3b1f9a40,transparent),#02040dd9}
+.ov.on .dlg,.ov.on .pv{animation:pop .3s var(--ease)}
+@keyframes pop{from{opacity:0;transform:translateY(14px) scale(.97)}}
+.nv{font-weight:500;transition:.25s}.nv svg{transition:.25s}.nv.on{box-shadow:inset 0 0 0 1px #ffffff14}.nv.on svg{color:var(--c);filter:drop-shadow(0 0 6px #22d3ee99)}
+.note{background:linear-gradient(135deg,#22d3ee14,#8b5cf614);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.sr{flex:1}.sr input{height:46px;border-radius:16px;background:#ffffff0f;box-shadow:inset 0 1px 0 #ffffff14}
+input,select{background:#ffffff0c;border-color:var(--b)}
+input:focus,select:focus{border-color:#22d3ee99;box-shadow:0 0 0 4px #22d3ee1f,0 0 24px #22d3ee22}
+.gear{width:46px;height:46px;border-radius:15px;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+.gear svg{transition:transform .5s var(--ease)}.gear:hover svg,.gear.on svg{transform:rotate(90deg)}.gear.on{border-color:var(--v);color:var(--c);box-shadow:0 0 0 3px #8b5cf630}
+.btn{font-weight:500;transition:transform .2s var(--ease),background .2s,box-shadow .2s}.btn:hover{background:#ffffff1f;transform:translateY(-1px)}.btn:active{transform:scale(.97)}
+.btn.pri{background:linear-gradient(135deg,#8b5cf6,#5b6cf5 55%,#22d3ee);box-shadow:0 8px 24px #8b5cf655,inset 0 1px 0 #ffffff55}.btn.pri:hover{box-shadow:0 12px 32px #8b5cf688,inset 0 1px 0 #ffffff66}
+.btn.pri.dng{background:linear-gradient(135deg,#ef4444,#b91c1c);box-shadow:0 8px 24px #ef444455}
+.ib{transition:.25s}.ib:hover{background:#ffffff1f}
+.stat{position:relative;overflow:hidden}.stat::before{content:'';position:absolute;inset:0 0 auto;height:2px;background:linear-gradient(90deg,var(--v),var(--c));opacity:.85}
+.stat b{font-size:28px;font-weight:700;letter-spacing:-.02em}.stat span svg{color:var(--c);filter:drop-shadow(0 0 6px #22d3ee88)}
+.bar i{box-shadow:0 0 12px #22d3ee66}
+.chips{scrollbar-width:none}.chips::-webkit-scrollbar{display:none}
+.chip{background:#ffffff0c;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);transition:.25s}.chip:hover{color:var(--t)}
+.chip.on{background:linear-gradient(135deg,#8b5cf655,#22d3ee33);border-color:#8b5cf6aa;box-shadow:0 4px 18px #8b5cf640}
+.card.doc,.fld{border-radius:20px;transition:transform .35s var(--ease),box-shadow .35s,border-color .35s}
+.card.doc:hover,.fld:hover{transform:translateY(-5px);border-color:#8b5cf688;box-shadow:0 20px 50px #8b5cf63d,0 0 0 1px #22d3ee22,inset 0 1px 0 #ffffff30}
+.th{height:128px;position:relative;background:linear-gradient(135deg,#8b5cf622,#22d3ee14),#0006}
+.th::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,#05081acc);pointer-events:none}
+.th img{transition:transform .5s var(--ease)}.doc:hover .th img{transform:scale(1.07)}
+.ext{position:relative;z-index:1}.ext svg{padding:12px;box-sizing:content-box;border-radius:16px;background:linear-gradient(135deg,#8b5cf644,#22d3ee33);border:1px solid var(--b)}
+.cp{position:absolute;top:10px;left:10px;z-index:2;font-size:10.5px;font-weight:600;letter-spacing:.04em;padding:3px 9px;border-radius:99px;background:#050a1f99;border:1px solid var(--b);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.fv{z-index:2;background:#050a1f99;border:1px solid var(--b);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.nm{padding:12px 14px 2px}.doc .mt{padding:0 14px 14px}.fld{padding:20px}
+.empty>svg{padding:18px;box-sizing:content-box;border-radius:50%;background:linear-gradient(135deg,#8b5cf633,#22d3ee22);border:1px solid var(--b);color:var(--c)}
+.media,.ed .stage{border:1px solid var(--b);background:#02040d99}
+.drop{background:linear-gradient(135deg,#8b5cf614,#22d3ee0d);border-color:#22d3ee66}
+.toast{background:linear-gradient(145deg,#1b2254f5,#0c1230f5);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:0 12px 36px #0009}
+.fab{box-shadow:0 12px 34px #8b5cf688,0 0 0 6px #8b5cf61f,inset 0 1px 0 #ffffff55}.fab:hover{transform:scale(1.08) rotate(90deg)}
+@media(min-width:821px){.app{grid-template-columns:268px 1fr}aside{top:14px;height:calc(100vh - 28px);margin:14px 0 14px 14px;padding:22px 14px;border:1px solid var(--b);border-radius:26px;background:linear-gradient(160deg,#ffffff14,#ffffff05);box-shadow:0 20px 60px #0008,inset 0 1px 0 #ffffff22}main{padding-top:30px}.top,#main{max-width:1180px;margin-inline:auto}}
+@media(max-width:820px){aside{left:12px;right:12px;bottom:calc(10px + env(safe-area-inset-bottom,0px));padding:6px;border:1px solid var(--b);border-radius:26px;background:linear-gradient(160deg,#1a2152cc,#0a1030d9);box-shadow:0 16px 40px #000a,inset 0 1px 0 #ffffff26}.nv{border-radius:18px}.nv.on{background:linear-gradient(135deg,#8b5cf644,#22d3ee22)}.fab{bottom:calc(98px + env(safe-area-inset-bottom,0px))}main{padding-top:14px}.top{gap:10px}.ml{font-weight:800;font-size:21px;background:linear-gradient(90deg,#fff,#a5b4ff,#67e8f9);-webkit-background-clip:text;background-clip:text;color:transparent}.sr{min-width:0}h2{font-size:24px}}
+.sh{right:44px}.btn:disabled{opacity:.45;pointer-events:none}.drop.big{padding:34px 16px}
+.pgs{display:flex;gap:8px;flex-wrap:wrap}.pg{position:relative;width:62px;height:82px;border-radius:10px;overflow:hidden;border:1px solid var(--b)}.pg img{width:100%;height:100%;object-fit:cover}.pg b{position:absolute;left:5px;bottom:3px;font-size:11px;text-shadow:0 1px 3px #000}.pg button{position:absolute;top:2px;right:2px;width:20px;height:20px;border-radius:50%;border:0;background:#000b;color:#fff;cursor:pointer;line-height:1}
+.media video{width:100%;max-height:68vh;background:#000}
+.abar{display:flex;gap:8px;margin-bottom:12px}.abar .btn{flex:1;justify-content:center}.abar .btn.on{border-color:#facc1588;color:#facc15}.abar .btn.on svg{fill:#facc15}
+@media(max-width:820px){.media img,.media video{max-height:40vh}.media iframe{height:42vh}.abar .btn span{display:none}.abar .btn{padding:12px 0}}
+@media(prefers-reduced-motion:reduce){*,::before,::after{animation:none!important;transition:none!important}}
+</style></head><body>
+<div class="app">
+<aside><div class="logo"><i id="lg"></i>Vaultly</div><nav id="nav"></nav><div class="note" id="sn"></div></aside>
+<main><div class="top"><div class="ml">Vaultly</div><div class="sr"><span id="si"></span><input id="q" type="search" placeholder="Search documents…" autocomplete="off"></div><button class="ib gear" id="gear" data-v="settings" aria-label="Settings"></button></div><div id="main"></div></main>
+</div>
+<button class="fab" data-act="add" aria-label="Add document" id="fab"></button>
+<input type="file" id="fi" multiple hidden>
+<div id="ov" class="ov"></div><div id="ov2" class="ov"></div><div id="lock" class="ov"></div>
+<div id="dz">Drop files to add them to Vaultly</div><div id="busy"><div class="spin"></div><span id="bm"></span></div><div id="toasts"></div>
+<script>
+'use strict';
+const $=s=>document.querySelector(s);
+const CATS=['Identity','Education','Certificates','Finance','Personal','Medical','Career','Other'];
+const IC={scan:'M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3M4 12h16',gear:'M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z',home:'M3 11l9-8 9 8v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z',files:'M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8zM14 3v5h5',file:'M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8zM14 3v5h5M9 13h6M9 17h6',folder:'M3 6a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z',star:'M12 3l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.8 6.1 21l1.2-6.5L2.5 9.9l6.6-.9z',clock:'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM12 7v5l3 2',sliders:'M4 7h10M18 7h2M4 17h2M10 17h10M16 4v6M8 14v6',plus:'M12 5v14M5 12h14',search:'M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14zM21 21l-4.3-4.3',trash:'M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13',download:'M12 4v11M7 10l5 5 5-5M5 20h14',share:'M12 15V3M7 8l5-5 5 5M5 13v7h14v-7',edit:'M4 20h4L19 9l-4-4L4 16zM13 7l4 4',x:'M6 6l12 12M18 6L6 18',rotl:'M4 11a8 8 0 1 1 2.3 5.7M4 4v7h7',rotr:'M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7',crop:'M6 2v14h14M2 6h14v14',pen:'M3 21l3-1 12-12-2-2L4 18zM14 6l4 4',lock:'M6 11h12v10H6zM8 11V7a4 4 0 0 1 8 0v4',up:'M12 16V4M7 9l5-5 5 5M5 20h14',back:'M15 5l-7 7 7 7',ext:'M14 4h6v6M20 4l-9 9M18 14v5H5V6h5'};
+const ic=(n,s=20)=>`<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${IC[n].split('M').filter(Boolean).map(d=>`<path d="M${d}"/>`).join('')}</svg>`;
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,8);
+const sz=b=>b<1024?b+' B':b<1048576?(b/1024).toFixed(1)+' KB':b<1073741824?(b/1048576).toFixed(1)+' MB':(b/1073741824).toFixed(2)+' GB';
+const dt=t=>new Date(t).toLocaleDateString(undefined,{day:'numeric',month:'short',year:'numeric'});
+const ext=d=>((d.name.includes('.')?d.name.split('.').pop():'FILE')).slice(0,4).toUpperCase();
+const isImg=d=>d.type.startsWith('image/'),isPdf=d=>d.type==='application/pdf'||/\.pdf$/i.test(d.name);
+const S={view:'home',folder:null,cat:'',q:'',sort:'new',docs:[],folders:[],loading:true,err:null,est:null,pv:null};
+const byId=id=>S.docs.find(d=>d.id===id);
+const NAV=[['home','Overview','home'],['all','All Files','files'],['folders','Folders','folder'],['fav','Favorites','star'],['recent','Recent','clock']];
+
+/* ---------- IndexedDB ---------- */
+let db;
+const openDB=()=>new Promise((res,rej)=>{if(!window.indexedDB)return rej(new Error('IndexedDB is not available in this browser.'));const r=indexedDB.open('vaultly',1);r.onupgradeneeded=()=>{r.result.createObjectStore('files',{keyPath:'id'});r.result.createObjectStore('folders',{keyPath:'id'})};r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error);r.onblocked=()=>rej(new Error('Database is blocked by another tab.'))});
+const dbAll=n=>new Promise((res,rej)=>{const r=db.transaction(n).objectStore(n).getAll();r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)});
+const dbW=(n,fn)=>new Promise((res,rej)=>{const t=db.transaction(n,'readwrite');fn(t.objectStore(n));t.oncomplete=res;t.onerror=t.onabort=()=>rej(t.error||new Error('Write failed'))});
+const dbPut=(n,o)=>dbW(n,s=>s.put(o)),dbDel=(n,id)=>dbW(n,s=>s.delete(id)),dbClear=n=>dbW(n,s=>s.clear());
+async function save(d){try{await dbPut('files',d);return true}catch(e){toast('Could not save: '+(e.name==='QuotaExceededError'?'browser storage is full':e.message),'err');return false}}
+
+/* ---------- UI helpers ---------- */
+const urls={};const url=d=>urls[d.id]||(urls[d.id]=URL.createObjectURL(d.blob));
+const unurl=id=>{if(urls[id]){URL.revokeObjectURL(urls[id]);delete urls[id]}};
+function toast(m,t){const e=document.createElement('div');e.className='toast '+(t||'');e.textContent=m;$('#toasts').append(e);setTimeout(()=>e.remove(),3800)}
+function busy(on,m){$('#busy').classList.toggle('on',on);$('#bm').textContent=m||''}
+function modal(h){const o=$('#ov');o.innerHTML=h;o.classList.add('on');document.body.style.overflow='hidden'}
+function closeModal(){stopCam();const o=$('#ov');o.classList.remove('on');o.innerHTML='';S.pv=null;E=null;document.body.style.overflow=''}
+function ask(title,{value=null,ok='OK',danger=false,type='text',msg=''}={}){return new Promise(res=>{const o=$('#ov2');o.innerHTML=`<div class="glass dlg"><h3>${title}</h3>${msg?`<p class="mt">${msg}</p>`:''}${value!==null?`<input id="ai" type="${type}" value="${esc(value)}"${type==='password'?' inputmode="numeric" autocomplete="off"':''}>`:''}<div class="row" style="justify-content:flex-end"><button class="btn" id="ac">Cancel</button><button class="btn pri ${danger?'dng':''}" id="ao">${ok}</button></div></div>`;o.classList.add('on');const i=$('#ai');if(i){i.focus();i.select()}const done=v=>{o.classList.remove('on');o.innerHTML='';res(v)};$('#ac').onclick=()=>done(null);$('#ao').onclick=()=>done(i?i.value.trim():true);o.onclick=e=>{if(e.target===o)done(null)};if(i)i.onkeydown=e=>{if(e.key==='Enter')$('#ao').click()}})}
+const empty=(t,p,b)=>`<div class="empty">${ic('files',40)}<h3>${t}</h3><p>${p}</p>${b?`<button class="btn pri" data-act="add">${ic('plus',18)} Add document</button>`:''}</div>`;
+
+/* ---------- Views ---------- */
+function list(){let a=S.docs.slice();
+ if(S.view==='fav')a=a.filter(d=>d.fav);
+ if(S.view==='folders'&&S.folder)a=a.filter(d=>d.folder===S.folder);
+ if(S.cat&&S.view==='all')a=a.filter(d=>d.cat===S.cat);
+ if(S.q){const q=S.q.toLowerCase();a=a.filter(d=>(d.name+' '+d.cat+' '+d.type).toLowerCase().includes(q))}
+ const so={new:(x,y)=>y.added-x.added,old:(x,y)=>x.added-y.added,name:(x,y)=>x.name.localeCompare(y.name),size:(x,y)=>y.size-x.size};
+ a.sort(S.view==='recent'?so.new:so[S.sort]);return S.view==='recent'?a.slice(0,30):a}
+const card=d=>`<div class="card doc" data-id="${d.id}" draggable="true"><div class="th">${isImg(d)?`<img loading="lazy" alt="" draggable="false" src="${url(d)}">`:`<div class="ext">${ic('file',30)}<b>${ext(d)}</b></div>`}</div><div class="nm">${esc(d.name)}</div><div class="mt">${sz(d.size)} · ${dt(d.added)}</div><span class="cp">${esc(d.cat)}</span><button class="fv sh" data-share="${d.id}" aria-label="Share">${ic('share',15)}</button><button class="fv ${d.fav?'on':''}" data-fav="${d.id}" aria-label="Favorite">${ic('star',15)}</button></div>`;
+const sortSel=()=>`<select id="sort" style="width:auto">${[['new','Newest'],['old','Oldest'],['name','Name A–Z'],['size','Largest']].map(([k,l])=>`<option value="${k}" ${S.sort===k?'selected':''}>${l}</option>`).join('')}</select>`;
+function grid(a,msg){return a.length?`<div class="grid">${a.map(card).join('')}</div>`:S.q?empty('No matches',`Nothing matches “${esc(S.q)}”.`):empty(msg[0],msg[1],!S.docs.length)}
+function vList(){const a=list(),t={all:'All Documents',fav:'Favorites',recent:'Recently Added'}[S.view];
+ const chips=S.view==='all'?`<div class="chips"><button class="chip ${S.cat?'':'on'}" data-cat="">All <small>${S.docs.length}</small></button>${CATS.map(c=>`<button class="chip ${S.cat===c?'on':''}" data-cat="${c}">${c} <small>${S.docs.filter(d=>d.cat===c).length}</small></button>`).join('')}</div>`:'';
+ return `<div class="hd"><h2>${t}</h2>${S.view==='recent'?'':sortSel()}</div>${chips}${grid(a,S.view==='fav'?['No favorites yet','Tap the star on any document to pin it here.']:['No documents yet','Add your first document to start your vault.'])}`}
+function vFolders(){
+ if(S.folder){const f=S.folders.find(x=>x.id===S.folder);if(!f){S.folder=null;return vFolders()}
+  return `<div class="hd"><div class="row"><button class="ib" data-act="back">${ic('back')}</button><h2>${esc(f.name)}</h2></div><div class="row">${sortSel()}<button class="btn" data-act="renfolder">${ic('edit',16)} Rename</button><button class="btn red" data-act="delfolder">${ic('trash',16)} Delete</button></div></div>${grid(list(),['This folder is empty','Add documents here, or move existing ones from their preview screen.'])}`}
+ const n=id=>S.docs.filter(d=>d.folder===id).length;
+ return `<div class="hd"><h2>Folders</h2><button class="btn pri" data-act="newfolder">${ic('plus',18)} New folder</button></div>${S.folders.length?`<div class="grid">${S.folders.map(f=>`<div class="card fld" data-folder="${f.id}">${ic('folder',30)}<b>${esc(f.name)}</b><span class="mt">${n(f.id)} document${n(f.id)===1?'':'s'}</span></div>`).join('')}</div>`:empty('No folders yet','Create a folder to organize related documents.')}<h3>Categories</h3><div class="grid">${CATS.map(c=>`<div class="card fld" data-cat="${c}">${ic('files',26)}<b>${c}</b><span class="mt">${S.docs.filter(d=>d.cat===c).length} documents</span></div>`).join('')}</div>`}
+function vHome(){const n=S.docs.length,bytes=S.docs.reduce((s,d)=>s+d.size,0);
+ const st=[['Documents',n,'files'],['Folders',S.folders.length,'folder'],['Favorites',S.docs.filter(d=>d.fav).length,'star'],['Used by Vaultly',sz(bytes),'clock']];
+ const cats=CATS.map(c=>[c,S.docs.filter(d=>d.cat===c).length]),mx=Math.max(1,...cats.map(x=>x[1]));
+ const rec=S.docs.slice().sort((a,b)=>b.added-a.added).slice(0,6),e=S.est;
+ return `<div class="hd"><h2>Overview</h2><button class="btn pri" data-act="scan">${ic('scan',16)} Scan document</button></div><div class="note">${ic('lock',16)}<span>Documents are stored locally in this browser on this device. They are <b>not</b> backed up to the cloud — clearing site data or losing the device will delete them.</span></div>
+ <div class="stats">${st.map(([l,v,i])=>`<div class="card stat"><span>${ic(i,16)}${l}</span><b>${v}</b></div>`).join('')}</div>
+ ${e&&e.quota?`<div class="card pad"><div class="row sp"><b>Browser storage</b><span class="mt">${sz(e.usage)} of ${sz(e.quota)} used</span></div><div class="bar"><i style="width:${Math.min(100,Math.max(1,e.usage/e.quota*100))}%"></i></div><p class="mt">Usage covers everything this site stores. The limit is set by your browser.</p></div>`:''}
+ <h3>Categories</h3><div class="card pad" style="margin-top:0">${cats.map(([c,k])=>`<button class="cr" data-cat="${c}"><span>${c}</span><div class="bar"><i style="width:${k/mx*100}%"></i></div><span class="mt">${k}</span></button>`).join('')}</div>
+ <h3>Recently added</h3>${rec.length?`<div class="grid">${rec.map(card).join('')}</div>`:empty('Your vault is empty','Add your first document to get started.',true)}<h3>Add files</h3>${dropHtml()}`}
+function vSettings(){const pin=!!getPin(),e=S.est;
+ return `<div class="hd"><h2>Settings</h2></div>
+ <div class="card pad"><b>Storage</b><p class="mt" style="margin:6px 0 10px">Files live in this browser's IndexedDB on this device only. Nothing is uploaded anywhere and there is no automatic backup — download important files to keep your own copies.</p>${e?`<div class="kv"><span>Used by this site</span><span>${sz(e.usage||0)}</span></div><div class="kv"><span>Browser limit</span><span>${e.quota?sz(e.quota):'Unknown'}</span></div>`:''}<div class="kv"><span>Persistent storage</span><span>${S.persisted==null?'Unsupported':S.persisted?'Granted':'Not granted'}</span></div><div class="row" style="margin-top:12px"><button class="btn" data-act="persist">Request persistent storage</button></div></div>
+ <div class="card pad"><b>PIN lock</b><p class="mt" style="margin:6px 0 10px">Optional. The PIN only hides the app screen on this device. It does <b>not</b> encrypt your stored files, and anyone with access to this browser profile can still reach the data.</p><div class="row">${pin?`<button class="btn" data-act="lock">${ic('lock',16)} Lock now</button><button class="btn" data-act="pinset">Change PIN</button><button class="btn red" data-act="pinrm">Remove PIN</button>`:`<button class="btn pri" data-act="pinset">${ic('lock',16)} Set PIN</button>`}</div></div>
+ <div class="card pad"><b>Danger zone</b><p class="mt" style="margin:6px 0 10px">Permanently deletes every document and folder in Vaultly from this browser.</p><button class="btn red" data-act="wipe">${ic('trash',16)} Delete all data</button></div>
+ <p class="mt" style="margin-top:16px">Vaultly · single-file app · ${S.docs.length} documents stored locally</p>`}
+function render(){
+ $('#gear').classList.toggle('on',S.view==='settings');$('#nav').innerHTML=NAV.map(([k,l,i])=>`<button class="nv ${S.view===k?'on':''}" data-v="${k}">${ic(i)}<span>${l}</span></button>`).join('');
+ const m=$('#main');
+ if(S.loading)return void(m.innerHTML='<div class="empty"><div class="spin"></div><p>Opening your vault…</p></div>');
+ if(S.err)return void(m.innerHTML=`<div class="empty"><h3>Storage unavailable</h3><p>${esc(S.err)}</p><p>Vaultly needs IndexedDB to store files. Private browsing modes may block it.</p><button class="btn" onclick="location.reload()">Try again</button></div>`);
+ m.innerHTML=({home:vHome,all:vList,fav:vList,recent:vList,folders:vFolders,settings:vSettings}[S.view])()}
+
+/* ---------- File actions ---------- */
+async function addFiles(fl,cat='Other',folder=null){fl=[...fl];if(!fl.length||!db)return;let ok=0,bad=0;
+ for(let i=0;i<fl.length;i++){busy(true,`Saving ${i+1} of ${fl.length}…`);const f=fl[i];
+  try{const d={id:uid(),name:f.name,type:f.type||'application/octet-stream',size:f.size,cat,folder:folder||null,fav:false,added:Date.now(),blob:f};await dbPut('files',d);S.docs.push(d);ok++}
+  catch(e){bad++;toast(`${f.name}: ${e.name==='QuotaExceededError'?'browser storage is full':'could not be saved'}`,'err')}}
+ busy(false);if(ok)toast(`${ok} file${ok>1?'s':''} saved locally`);render();refreshEst()}
+const ctx=()=>({cat:$('#ucat')?$('#ucat').value:(S.cat||'Other'),folder:$('#ufold')?$('#ufold').value:S.folder});
+function openAdd(){modal(`<div class="glass dlg wide"><div class="pvh"><h3>Add documents</h3><button class="ib" data-act="close">${ic('x')}</button></div><div class="drop">${ic('up',34)}<p>Drag &amp; drop files here</p><small class="mt">PDF, JPG, PNG and other file types</small><div class="row" style="justify-content:center"><label class="btn pri fl">${ic('up',16)} Choose files<input class="fin" type="file" multiple></label><label class="btn fl">Take photo<input class="fin" type="file" accept="image/*" capture="environment"></label><button class="btn" data-act="scan">${ic('scan',16)} Scan document</button></div></div><div class="two"><label>Category<select id="ucat">${CATS.map(c=>`<option ${c===(S.cat||'Other')?'selected':''}>${c}</option>`).join('')}</select></label><label>Folder<select id="ufold"><option value="">No folder</option>${S.folders.map(f=>`<option value="${f.id}" ${f.id===S.folder?'selected':''}>${esc(f.name)}</option>`).join('')}</select></label></div><p class="mt">Saved only in this browser on this device — not uploaded or backed up.</p></div>`)}
+function showPreview(id){const d=byId(id);if(!d)return closeModal();S.pv=id;const u=url(d);
+ const m=isImg(d)?`<img src="${u}" alt="">`:isPdf(d)?`<iframe src="${u}" title="PDF preview"></iframe>`:d.type.startsWith('video/')?`<video src="${u}" controls></video>`:d.type.startsWith('audio/')?`<audio src="${u}" controls></audio>`:`<div class="ext big">${ic('file',56)}<b>${ext(d)}</b><p class="mt">No preview available for this file type.</p></div>`;
+ modal(`<div class="glass pv"><div class="pvh"><h3>${esc(d.name)}</h3><button class="ib" data-act="close" aria-label="Close">${ic('x')}</button></div><div class="abar"><button class="btn ${d.fav?'on':''}" data-act="fav" data-id="${id}" aria-label="Favorite">${ic('star',17)}<span>${d.fav?'Favorited':'Favorite'}</span></button><button class="btn" data-act="rename" data-id="${id}" aria-label="Rename">${ic('edit',17)}<span>Rename</span></button><button class="btn" data-act="share" data-id="${id}" aria-label="Share">${ic('share',17)}<span>Share</span></button><button class="btn" data-act="dl" data-id="${id}" aria-label="Download">${ic('download',17)}<span>Download</span></button></div><div class="pvb"><div class="media">${m}</div><div class="side">
+ <div><div class="kv"><span>Type</span><span>${esc(d.type)}</span></div><div class="kv"><span>Size</span><span>${sz(d.size)}</span></div><div class="kv"><span>Added</span><span>${dt(d.added)}</span></div></div>
+ <label>Category<select id="pcat">${CATS.map(c=>`<option ${c===d.cat?'selected':''}>${c}</option>`).join('')}</select></label>
+ <label>Folder<select id="pfold"><option value="">No folder</option>${S.folders.map(f=>`<option value="${f.id}" ${f.id===d.folder?'selected':''}>${esc(f.name)}</option>`).join('')}</select></label>
+ <button class="btn" data-act="fav" data-id="${id}">${ic('star',16)} ${d.fav?'Remove favorite':'Add to favorites'}</button>
+ <button class="btn" data-act="rename" data-id="${id}">${ic('edit',16)} Rename</button>
+ <button class="btn pri" data-act="dl" data-id="${id}">${ic('download',16)} Download</button>
+ <button class="btn" data-act="share" data-id="${id}">${ic('share',16)} Share</button>
+ ${isPdf(d)?`<a class="btn" href="${u}" target="_blank" rel="noopener">${ic('ext',16)} Open in new tab</a>`:''}
+ ${isImg(d)?`<button class="btn" data-act="edit" data-id="${id}">${ic('crop',16)} Edit image</button>`:''}
+ <button class="btn red" data-act="del" data-id="${id}">${ic('trash',16)} Delete</button></div></div></div>`)}
+async function toggleFav(id){const d=byId(id);if(!d)return;d.fav=!d.fav;if(!await save(d))d.fav=!d.fav;render();if(S.pv===id)showPreview(id)}
+async function dl(d){let dn=null;try{dn=window.claude&&claude.use?await claude.use('downloads'):null}catch{}
+ if(dn){try{await dn.save({filename:d.name,data:d.blob})}catch(e){if(e&&e.code==='rejected_extension')toast("This file type can't be downloaded from the hosted preview.",'err');else if(!e||e.code!=='declined')toast('Download failed','err')}return}
+ const a=document.createElement('a');a.href=url(d);a.download=d.name;document.body.append(a);a.click();a.remove()}
+async function share(d){const f=new File([d.blob],d.name,{type:d.type});if(navigator.canShare&&navigator.canShare({files:[f]})){try{await navigator.share({files:[f],title:d.name})}catch(e){if(e.name!=='AbortError')toast('Sharing failed','err')}}else toast("Sharing files isn't supported in this browser. Use Download instead.",'err')}
+async function rename(d){const n=await ask('Rename document',{value:d.name,ok:'Rename'});if(!n)return;const o=d.name;d.name=n;if(await save(d)){render();showPreview(d.id)}else d.name=o}
+async function del(d){if(!await ask('Delete document?',{msg:`“${esc(d.name)}” will be permanently removed from this device. This can't be undone.`,ok:'Delete',danger:true}))return;try{await dbDel('files',d.id)}catch(e){return toast('Could not delete: '+e.message,'err')}unurl(d.id);S.docs=S.docs.filter(x=>x.id!==d.id);closeModal();render();refreshEst();toast('Document deleted')}
+async function newFolder(){const n=await ask('New folder',{value:'',ok:'Create'});if(!n)return;const f={id:uid(),name:n,added:Date.now()};try{await dbPut('folders',f);S.folders.push(f);render()}catch(e){toast('Could not create folder: '+e.message,'err')}}
+async function renFolder(){const f=S.folders.find(x=>x.id===S.folder);const n=f&&await ask('Rename folder',{value:f.name,ok:'Rename'});if(!n)return;f.name=n;try{await dbPut('folders',f);render()}catch(e){toast(e.message,'err')}}
+async function delFolder(){const f=S.folders.find(x=>x.id===S.folder);if(!f||!await ask('Delete folder?',{msg:'Documents inside are kept and moved out of the folder.',ok:'Delete folder',danger:true}))return;try{for(const d of S.docs.filter(d=>d.folder===f.id)){d.folder=null;await dbPut('files',d)}await dbDel('folders',f.id);S.folders=S.folders.filter(x=>x!==f);S.folder=null;render()}catch(e){toast('Could not delete folder: '+e.message,'err')}}
+
+/* ---------- Image editor ---------- */
+let E=null;
+function editor(d){const img=new Image();img.onerror=()=>toast('This image could not be loaded for editing','err');
+ img.onload=()=>{const k=Math.min(1,3000/Math.max(img.naturalWidth,img.naturalHeight)),w=document.createElement('canvas');w.width=Math.max(1,Math.round(img.naturalWidth*k));w.height=Math.max(1,Math.round(img.naturalHeight*k));w.getContext('2d').drawImage(img,0,0,w.width,w.height);
+  const wk=document.createElement('canvas');wk.width=w.width;wk.height=w.height;wk.getContext('2d').drawImage(w,0,0);
+  E={d,work:wk,br:100,mode:'',sel:null,color:'#22d3ee',orig:w};
+  modal(`<div class="glass pv ed"><div class="pvh"><h3>Edit: ${esc(d.name)}</h3><button class="ib" data-act="edcancel" aria-label="Close">${ic('x')}</button></div><div class="stage"><canvas id="cv"></canvas></div>
+  <div class="tools"><button class="btn" data-act="rotl">${ic('rotl',16)}</button><button class="btn" data-act="rotr">${ic('rotr',16)}</button><button class="btn" data-act="crop" id="bcrop">${ic('crop',16)} Crop</button><button class="btn pri" data-act="cropok" id="bok" style="display:none">Apply crop</button><button class="btn" data-act="draw" id="bdraw">${ic('pen',16)} Draw</button><input type="color" id="col" value="#22d3ee" aria-label="Pen color"></div>
+  <div class="tools"><label class="row" style="flex-direction:row">Brightness <input type="range" id="br" min="40" max="180" value="100"></label><button class="btn" data-act="edreset">Reset</button></div>
+  <div class="tools"><button class="btn pri" data-act="savecopy">Save as copy</button><button class="btn" data-act="savereplace">Replace original</button><button class="btn" data-act="edcancel">Cancel</button></div><p class="mt" style="margin-top:8px">The original stays unchanged until you save.</p></div>`);
+  drawE();bindCanvas()};img.src=url(d)}
+function drawE(){const c=$('#cv');if(!c||!E)return;const w=E.work;if(c.width!==w.width||c.height!==w.height){c.width=w.width;c.height=w.height}const x=c.getContext('2d');x.clearRect(0,0,c.width,c.height);x.drawImage(w,0,0);
+ if(E.sel){const s=E.sel;x.fillStyle='rgba(0,0,0,.55)';x.fillRect(0,0,c.width,s.y);x.fillRect(0,s.y+s.h,c.width,c.height-s.y-s.h);x.fillRect(0,s.y,s.x,s.h);x.fillRect(s.x+s.w,s.y,c.width-s.x-s.w,s.h);x.strokeStyle='#22d3ee';x.lineWidth=Math.max(2,c.width/300);x.strokeRect(s.x,s.y,s.w,s.h)}
+ c.style.filter=`brightness(${E.br}%)`}
+function bindCanvas(){const c=$('#cv');let st=null,last=null;const pt=e=>{const r=c.getBoundingClientRect();return{x:Math.max(0,Math.min(c.width,(e.clientX-r.left)*c.width/r.width)),y:Math.max(0,Math.min(c.height,(e.clientY-r.top)*c.height/r.height))}};
+ c.onpointerdown=e=>{if(!E.mode)return;c.setPointerCapture(e.pointerId);const p=pt(e);if(E.mode==='crop'){st=p;E.sel={x:p.x,y:p.y,w:0,h:0}}else last=p};
+ c.onpointermove=e=>{if(!E.mode)return;const p=pt(e);if(E.mode==='crop'&&st){E.sel={x:Math.min(st.x,p.x),y:Math.min(st.y,p.y),w:Math.abs(p.x-st.x),h:Math.abs(p.y-st.y)};drawE()}else if(E.mode==='draw'&&last){const x=E.work.getContext('2d');x.strokeStyle=E.color;x.lineWidth=Math.max(3,E.work.width/180);x.lineCap=x.lineJoin='round';x.beginPath();x.moveTo(last.x,last.y);x.lineTo(p.x,p.y);x.stroke();last=p;drawE()}};
+ c.onpointerup=c.onpointercancel=()=>{st=last=null};
+ $('#br').oninput=e=>{E.br=+e.target.value;drawE()};$('#col').oninput=e=>E.color=e.target.value}
+function setMode(m){E.mode=E.mode===m?'':m;E.sel=null;$('#bcrop').classList.toggle('on',E.mode==='crop');$('#bdraw').classList.toggle('on',E.mode==='draw');$('#bok').style.display=E.mode==='crop'?'':'none';drawE()}
+function rotate(dir){const w=E.work,n=document.createElement('canvas');n.width=w.height;n.height=w.width;const x=n.getContext('2d');x.translate(n.width/2,n.height/2);x.rotate(dir*Math.PI/2);x.drawImage(w,-w.width/2,-w.height/2);E.work=n;E.sel=null;drawE()}
+function applyCrop(){const s=E.sel;if(!s||s.w<10||s.h<10)return toast('Drag on the image to select an area first','err');const n=document.createElement('canvas');n.width=Math.round(s.w);n.height=Math.round(s.h);n.getContext('2d').drawImage(E.work,s.x,s.y,s.w,s.h,0,0,n.width,n.height);E.work=n;setMode('crop');setMode('')}
+function outBlob(){const w=E.work,c=document.createElement('canvas');c.width=w.width;c.height=w.height;const x=c.getContext('2d');x.drawImage(w,0,0);
+ if(E.br!==100){const id=x.getImageData(0,0,c.width,c.height),p=id.data,f=E.br/100;for(let i=0;i<p.length;i+=4){p[i]=Math.min(255,p[i]*f);p[i+1]=Math.min(255,p[i+1]*f);p[i+2]=Math.min(255,p[i+2]*f)}x.putImageData(id,0,0)}
+ const t=E.d.type==='image/jpeg'?'image/jpeg':'image/png';return new Promise((res,rej)=>c.toBlob(b=>b?res(b):rej(new Error('Could not export image')),t,.92))}
+async function saveEdit(copy){const o=E.d;let b;try{b=await outBlob()}catch(e){return toast(e.message,'err')}
+ const ex=b.type==='image/jpeg'?'jpg':'png',base=o.name.replace(/\.[^.]+$/,'');
+ if(copy){const d={...o,id:uid(),name:base+' (edited).'+ex,type:b.type,size:b.size,blob:b,added:Date.now(),fav:false};if(await save(d)){S.docs.push(d);render();refreshEst();toast('Edited copy saved');showPreview(d.id)}}
+ else{if(!await ask('Replace original?',{msg:'The original image will be overwritten with your edited version.',ok:'Replace',danger:true}))return;const old={name:o.name,type:o.type,size:o.size,blob:o.blob};o.name=o.type===b.type?o.name:base+'.'+ex;o.type=b.type;o.size=b.size;o.blob=b;if(await save(o)){unurl(o.id);render();toast('Image updated');showPreview(o.id)}else Object.assign(o,old)}}
+
+/* ---------- PIN lock (hides the screen only; does not encrypt) ---------- */
+const PK='vaultly.pin';
+const getPin=()=>{try{return localStorage.getItem(PK)}catch{return null}};
+async function hash(p){const s='vaultly:'+p;try{const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));return[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')}catch{let h=0;for(const c of s)h=(h*31+c.charCodeAt(0))|0;return'x'+h}}
+function showLock(){const l=$('#lock');l.classList.add('on');l.innerHTML=`<div class="glass dlg"><div style="color:var(--c)">${ic('lock',34)}</div><h3>Vaultly is locked</h3><input id="lp" type="password" inputmode="numeric" placeholder="Enter PIN" autocomplete="off"><p class="err" id="le"></p><button class="btn pri" id="lu">Unlock</button><p class="mt">This PIN only hides the app screen. It does not encrypt your files.</p></div>`;
+ const go=async()=>{if(await hash($('#lp').value)===getPin()){l.classList.remove('on');l.innerHTML=''}else{$('#le').textContent='Incorrect PIN';$('#lp').value=''}};$('#lu').onclick=go;$('#lp').onkeydown=e=>{if(e.key==='Enter')go()};setTimeout(()=>$('#lp').focus(),50)}
+async function setPin(){const p=await ask('Choose a PIN',{value:'',type:'password',msg:'4–8 digits. Hides the app screen only; files are not encrypted.',ok:'Next'});if(p===null)return;if(!/^\d{4,8}$/.test(p))return toast('PIN must be 4–8 digits','err');const p2=await ask('Confirm PIN',{value:'',type:'password'});if(p2===null)return;if(p2!==p)return toast('PINs did not match','err');try{localStorage.setItem(PK,await hash(p));toast('PIN lock enabled');render()}catch{toast('Could not save PIN: browser storage is blocked','err')}}
+async function rmPin(){const p=await ask('Enter current PIN',{value:'',type:'password',ok:'Remove PIN'});if(p===null)return;if(await hash(p)!==getPin())return toast('Incorrect PIN','err');try{localStorage.removeItem(PK)}catch{}toast('PIN removed');render()}
+
+/* ---------- Drop zone, rename-before-save, scanner, PDF ---------- */
+function dropHtml(){return `<div class='drop big'>${ic('up',34)}<p>Drag &amp; drop files here, or tap to pick from your device</p><small class='mt'>Rename them before saving. Stored only on this device.</small><div class='row' style='justify-content:center'><label class='btn pri fl'>${ic('up',16)} Choose files<input class='fin' type='file' multiple></label><button class='btn' data-act='scan'>${ic('scan',16)} Scan document</button></div></div>`}
+function reviewFiles(fl,cat,folder){fl=[...fl];if(!fl.length)return;cat=cat||'Other';
+ modal(`<div class='glass dlg wide'><div class='pvh'><h3>Review ${fl.length} file${fl.length>1?'s':''}</h3><button class='ib' data-act='close'>${ic('x')}</button></div><div style='display:flex;flex-direction:column;gap:8px;max-height:44vh;overflow:auto'>${fl.map((f,i)=>`<label>${sz(f.size)} · ${esc(f.type||'file')}<input class='rn' data-i='${i}' value='${esc(f.name)}'></label>`).join('')}</div><div class='two'><label>Category<select id='rcat'>${CATS.map(c=>`<option ${c===cat?'selected':''}>${c}</option>`).join('')}</select></label><label>Folder<select id='rfold'><option value=''>No folder</option>${S.folders.map(f=>`<option value='${f.id}' ${f.id===folder?'selected':''}>${esc(f.name)}</option>`).join('')}</select></label></div><div class='row' style='justify-content:flex-end'><button class='btn' data-act='close'>Cancel</button><button class='btn pri' id='rsave'>Save to vault</button></div></div>`);
+ $('#rsave').onclick=()=>{const g=fl.map((f,i)=>{const n=document.querySelector(`.rn[data-i='${i}']`).value.trim()||f.name;return n===f.name?f:new File([f],n,{type:f.type})});const c=$('#rcat').value,fo=$('#rfold').value||null;closeModal();addFiles(g,c,fo)}}
+let SC=null;
+function stopCam(){if(SC){SC.stream&&SC.stream.getTracks().forEach(t=>t.stop());SC=null}}
+async function openScan(){SC={stream:null,pages:[]};
+ modal(`<div class='glass pv'><div class='pvh'><h3>Scan document</h3><button class='ib' data-act='close'>${ic('x')}</button></div><div class='pvb'><div class='media'><video id='cam' autoplay playsinline muted></video><p class='mt' id='cmsg' style='padding:20px;text-align:center'>Starting camera…</p></div><div class='side'><button class='btn pri' data-act='snap'>${ic('scan',16)} Capture page</button><label class='btn fl'>Add from camera app / photos<input class='fin2' type='file' accept='image/*' capture='environment' multiple></label><label style='flex-direction:row;align-items:center;font-size:14px;color:var(--t)'><input type='checkbox' id='enh' checked style='width:auto'> Enhance (clean black &amp; white)</label><div id='pgs' class='pgs'></div><label>Name<input id='sname' value='Scan ${new Date().toLocaleDateString().replace(/[/]/g,'-')}'></label><label>Category<select id='scat'>${CATS.map(c=>`<option>${c}</option>`).join('')}</select></label><button class='btn pri' data-act='scansave' id='ssave' disabled>Save as PDF</button></div></div></div>`);
+ try{if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia)throw 0;const st=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'environment'},width:{ideal:2000}},audio:false});if(!SC){st.getTracks().forEach(t=>t.stop());return}SC.stream=st;$('#cam').srcObject=st;$('#cmsg').remove()}
+ catch(err){if(!SC)return;$('#cam').style.display='none';$('#cmsg').innerHTML=camHelp(err)}}
+function camHelp(e){const n=e&&e.name||'';let m;
+ if(!window.isSecureContext)m=`The camera is blocked because this page isn't running over HTTPS (browsers disable live camera on file:// and plain http:// pages). Host the file on an https:// address, or use the button below.`;
+ else if(window.self!==window.top&&(n==='NotAllowedError'||n==='SecurityError'||!n))m=`The camera is blocked because this preview runs inside a sandboxed frame. Open the downloaded vaultly.html from an https:// address, or use the button below.`;
+ else if(n==='NotAllowedError')m=`Camera permission was denied. Tap the lock icon in the address bar, open Permissions, allow Camera, then press Retry.`;
+ else if(n==='NotFoundError')m=`No camera was found on this device.`;
+ else if(n==='NotReadableError')m=`The camera is being used by another app. Close it and press Retry.`;
+ else m=`Live camera could not start${n?' ('+n+')':''}.`;
+ return `<b>${m}</b><br><br><label class='btn pri fl' style='display:inline-flex'>${ic('scan',16)} Open camera app<input class='fin2' type='file' accept='image/*' capture='environment'></label> <button class='btn' data-act='retrycam'>Retry</button><br><br><small>Each photo you take is added as a page, then save all pages as one PDF.</small>`}
+function renderPages(){const n=SC.pages.length;$('#pgs').innerHTML=SC.pages.map((p,i)=>`<div class='pg'><img src='${p.url}' alt='Page ${i+1}'><b>${i+1}</b><button data-act='pgdel' data-id='${i}' aria-label='Remove page'>×</button></div>`).join('');const b=$('#ssave');b.disabled=!n;b.textContent=n?`Save as PDF (${n} page${n>1?'s':''})`:'Save as PDF'}
+async function snap(){const v=$('#cam');if(!SC||!SC.stream||!v.videoWidth)return toast('Camera is not ready yet','err');await addPage(v,v.videoWidth,v.videoHeight)}
+async function addPage(src,w,h){if(!SC)return;const k=Math.min(1,1800/Math.max(w,h)),c=document.createElement('canvas');c.width=Math.round(w*k);c.height=Math.round(h*k);const x=c.getContext('2d');x.drawImage(src,0,0,c.width,c.height);
+ if($('#enh')&&$('#enh').checked){const id=x.getImageData(0,0,c.width,c.height),p=id.data;for(let i=0;i<p.length;i+=4){const g=.299*p[i]+.587*p[i+1]+.114*p[i+2],v=Math.max(0,Math.min(255,(g-110)*1.6+128));p[i]=p[i+1]=p[i+2]=v}x.putImageData(id,0,0)}
+ const b=await new Promise(r=>c.toBlob(r,'image/jpeg',.85));if(!b||!SC)return toast('Could not capture the page','err');SC.pages.push({url:URL.createObjectURL(b),w:c.width,h:c.height,bytes:new Uint8Array(await b.arrayBuffer())});renderPages()}
+function scanSave(){if(!SC||!SC.pages.length)return;const n=($('#sname').value.trim()||'Scan').replace(/[:/*?<>|]/g,'-'),cat=$('#scat').value;let f;try{f=new File([makePDF(SC.pages)],n+'.pdf',{type:'application/pdf'})}catch(e){return toast('Could not build the PDF','err')}SC.pages.forEach(p=>URL.revokeObjectURL(p.url));closeModal();addFiles([f],cat,S.folder)}
+function makePDF(pages){const enc=new TextEncoder(),parts=[],off=[];let len=0;const push=x=>{const b=typeof x==='string'?enc.encode(x):x;parts.push(b);len+=b.length};const obj=(n,fn)=>{off[n]=len;push(`${n} 0 obj\n`);fn();push('\nendobj\n')};
+ const N=pages.length;push('%PDF-1.4\n');obj(1,()=>push('<</Type/Catalog/Pages 2 0 R>>'));obj(2,()=>push(`<</Type/Pages/Count ${N}/Kids[${pages.map((_,i)=>`${3+3*i} 0 R`).join(' ')}]>>`));
+ pages.forEach((p,i)=>{const pw=595,ph=Math.round(595*p.h/p.w),c=`q ${pw} 0 0 ${ph} 0 0 cm /I Do Q`;obj(3+3*i,()=>push(`<</Type/Page/Parent 2 0 R/MediaBox[0 0 ${pw} ${ph}]/Resources<</XObject<</I ${5+3*i} 0 R>>>>/Contents ${4+3*i} 0 R>>`));obj(4+3*i,()=>push(`<</Length ${c.length}>>\nstream\n${c}\nendstream`));obj(5+3*i,()=>{push(`<</Type/XObject/Subtype/Image/Width ${p.w}/Height ${p.h}/ColorSpace/DeviceRGB/BitsPerComponent 8/Filter/DCTDecode/Length ${p.bytes.length}>>\nstream\n`);push(p.bytes);push('\nendstream')})});
+ const total=3*N+3,xr=len;push(`xref\n0 ${total}\n0000000000 65535 f \n`);for(let n=1;n<total;n++)push(String(off[n]).padStart(10,'0')+' 00000 n \n');push(`trailer\n<</Size ${total}/Root 1 0 R>>\nstartxref\n${xr}\n%%EOF`);return new Blob(parts,{type:'application/pdf'})}
+/* drag a stored file out of the page (desktop browsers that support DownloadURL) */
+document.addEventListener('dragstart',e=>{const c=e.target.closest&&e.target.closest('.doc');if(!c)return;const d=byId(c.dataset.id);if(!d)return;e.dataTransfer.effectAllowed='copy';try{e.dataTransfer.setData('DownloadURL',`${d.type||'application/octet-stream'}:${d.name.replace(/:/g,'-')}:${new URL(url(d),location.href).href}`)}catch{}});
+/* ---------- Misc ---------- */
+async function refreshEst(){try{S.est=await navigator.storage.estimate();S.persisted=navigator.storage.persisted?await navigator.storage.persisted():null}catch{}if(['home','settings'].includes(S.view))render()}
+async function wipe(){if(!await ask('Delete all data?',{msg:'Every document and folder will be permanently removed from this browser.',ok:'Delete everything',danger:true}))return;try{await dbClear('files');await dbClear('folders');Object.keys(urls).forEach(unurl);S.docs=[];S.folders=[];S.folder=null;render();refreshEst();toast('All data deleted')}catch(e){toast('Could not delete data: '+e.message,'err')}}
+const ACT={retrycam:async()=>{const p=SC?SC.pages:[];stopCam();await openScan();if(SC){SC.pages=p;renderPages()}},scan:openScan,snap,scansave:scanSave,pgdel:i=>{if(!SC)return;URL.revokeObjectURL(SC.pages[i].url);SC.pages.splice(i,1);renderPages()},add:openAdd,close:closeModal,choose:()=>$('#fi').click(),newfolder:newFolder,renfolder:renFolder,delfolder:delFolder,back:()=>{S.folder=null;render()},
+ fav:id=>toggleFav(id),rename:id=>rename(byId(id)),dl:id=>dl(byId(id)),share:id=>share(byId(id)),edit:id=>editor(byId(id)),del:id=>del(byId(id)),
+ rotl:()=>rotate(-1),rotr:()=>rotate(1),crop:()=>setMode('crop'),cropok:applyCrop,draw:()=>setMode('draw'),edreset:()=>{const n=document.createElement('canvas');n.width=E.orig.width;n.height=E.orig.height;n.getContext('2d').drawImage(E.orig,0,0);E.work=n;E.br=100;$('#br').value=100;setMode('');drawE()},
+ savecopy:()=>saveEdit(true),savereplace:()=>saveEdit(false),edcancel:()=>{const id=E&&E.d.id;id?showPreview(id):closeModal()},
+ pinset:setPin,pinrm:rmPin,lock:showLock,wipe,persist:async()=>{try{const ok=await navigator.storage.persist();toast(ok?'Persistent storage granted':'Browser declined persistent storage',ok?'':'err');refreshEst()}catch{toast('Not supported in this browser','err')}}};
+document.addEventListener('click',e=>{const g=s=>e.target.closest(s);let el;
+ if(e.target.classList.contains('ov')&&e.target.id==='ov')closeModal();
+ else if(el=g('[data-v]')){S.view=el.dataset.v;S.folder=null;S.cat='';render();scrollTo(0,0)}
+ else if(el=g('[data-share]'))share(byId(el.dataset.share));
+ else if(el=g('[data-fav]'))toggleFav(el.dataset.fav);
+ else if(el=g('[data-act]')){const f=ACT[el.dataset.act];f&&f(el.dataset.id)}
+ else if(el=g('.doc'))showPreview(el.dataset.id);
+ else if(el=g('[data-cat]')){S.cat=el.dataset.cat;S.view='all';render()}
+ else if(el=g('[data-folder]')){S.view='folders';S.folder=el.dataset.folder;render()}});
+document.addEventListener('change',async e=>{const t=e.target;
+ if(t.classList.contains('fin2')){const fs=[...t.files];t.value='';for(const f of fs){try{const bm=await createImageBitmap(f);await addPage(bm,bm.width,bm.height)}catch{toast('Could not read '+f.name,'err')}}}
+ else if(t.id==='sort'){S.sort=t.value;render()}
+ else if(t.id==='pcat'||t.id==='pfold'){const d=byId(S.pv);if(!d)return;const o={cat:d.cat,folder:d.folder};d.cat=$('#pcat').value;d.folder=$('#pfold').value||null;if(await save(d)){render();toast('Updated')}else Object.assign(d,o)}
+ else if(t.id==='fi'||t.classList.contains('fin')){const c=ctx();const fl=[...t.files];t.value='';closeModal();reviewFiles(fl,c.cat,c.folder)}});
+$('#q').addEventListener('input',e=>{S.q=e.target.value.trim();if(!['all','fav','recent'].includes(S.view)&&!(S.view==='folders'&&S.folder))S.view='all';render()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('#ov').classList.contains('on')&&!$('#ov2').classList.contains('on'))closeModal()});
+let dc=0;const hasF=e=>e.dataTransfer&&[...e.dataTransfer.types].includes('Files');
+addEventListener('dragenter',e=>{if(hasF(e)){dc++;$('#dz').classList.add('on')}});
+addEventListener('dragleave',e=>{if(hasF(e)&&--dc<=0){dc=0;$('#dz').classList.remove('on')}});
+addEventListener('dragover',e=>{if(hasF(e))e.preventDefault()});
+addEventListener('drop',e=>{if(!hasF(e))return;e.preventDefault();dc=0;$('#dz').classList.remove('on');const c=ctx();closeModal();reviewFiles(e.dataTransfer.files,c.cat,c.folder)});
+
+/* ---------- Init ---------- */
+$('#lg').innerHTML=ic('lock',18);$('#gear').innerHTML=ic('gear',21);$('#fab').innerHTML=ic('plus',28);$('#si').innerHTML=ic('search',18);
+$('#sn').innerHTML=ic('lock',16)+'<span>Stored locally on this device. Not backed up to the cloud.</span>';
+if(getPin())showLock();
+render();
+(async()=>{try{db=await openDB();S.docs=await dbAll('files');S.folders=await dbAll('folders')}catch(e){S.err=e.message||'Could not open the database.'}S.loading=false;render();refreshEst()})();
+</script></body></html>
